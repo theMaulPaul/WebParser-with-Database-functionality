@@ -12,8 +12,8 @@ using WebParser.Models;
 namespace WebParser.Migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20230707105122_CreateProductsDB")]
-    partial class CreateProductsDB
+    [Migration("20230707123055_FixedURL")]
+    partial class FixedURL
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,10 @@ namespace WebParser.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Vendor")
                         .IsRequired()

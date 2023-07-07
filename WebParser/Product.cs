@@ -30,6 +30,13 @@ namespace WebParser
         [JsonPropertyName("longURL")]
         public string Url { get; set; }
 
+        public string ProductURL
+        {
+            get
+            {
+                return $"https://www.swansonvitamins.com/{Url}";
+            }
+        }
         public string ImageUrl
         {
             get

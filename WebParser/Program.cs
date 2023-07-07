@@ -16,7 +16,7 @@ using (var db = new ProductsContext())
 {
     var s = new ProductToDB(db);
     s.UpdateDB(list);
-    Console.WriteLine("Writing to datbase done...");
+    Console.WriteLine("Writing to database done...");
 }
 
 //products.ForEach(p =>

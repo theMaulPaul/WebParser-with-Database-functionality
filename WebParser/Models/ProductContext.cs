@@ -18,6 +18,7 @@ namespace WebParser.Models
         public decimal Price { get; set; } 
         public string  Vendor { get; set; }
         public string ImageUrl{ get; set; }
+        public string ProductUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

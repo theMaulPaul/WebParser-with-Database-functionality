@@ -10,5 +10,6 @@ namespace WebParser.Service
     public interface WriteToFile
     {
         public void SaveAs(string fileName, List<Product> list);
+        public void SaveAs(string fileName, List<ProductContext> list);
     }
 }

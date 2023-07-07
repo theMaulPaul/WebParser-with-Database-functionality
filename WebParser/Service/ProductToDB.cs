@@ -40,6 +40,7 @@ namespace WebParser.Service
                 productDataBase.Price = Decimal.Parse(p.Price, CultureInfo.InvariantCulture);
                 productDataBase.Vendor = p.Vendor;
                 productDataBase.ImageUrl = p.ImageUrl;
+                productDataBase.ProductUrl = p.ProductURL;
                 productDataBase.UpdatedAt = DateTime.Now;
             });
             _context.SaveChanges();
