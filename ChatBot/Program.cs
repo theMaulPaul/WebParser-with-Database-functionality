@@ -1,5 +1,5 @@
 ﻿// http://t.me/MySalcarBot
-// 6070205489:AAF3CH6DUZg7IRtWj-WCSTkv-MWm497urL4
+// 
 
 using Newtonsoft.Json;
 using ChatBot.Models;
@@ -9,7 +9,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using WebParser.Models;
 using WebParser.Service;
 
-var token = "6070205489:AAF3CH6DUZg7IRtWj-WCSTkv-MWm497urL4";
+var token = "";
 var bot = new TelegramBotClient(token);
 var name = bot.GetMeAsync().Result.FirstName;
 
