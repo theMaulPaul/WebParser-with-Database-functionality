@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EMailSender\EMailSender.csproj" />
     <ProjectReference Include="..\WebParser\WebParser.csproj" />
   </ItemGroup>
 

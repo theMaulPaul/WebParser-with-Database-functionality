@@ -9,7 +9,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using WebParser.Models;
 using WebParser.Service;
 
-var token = "";
+var token = "6070205489:AAF3CH6DUZg7IRtWj-WCSTkv-MWm497urL4";
 var bot = new TelegramBotClient(token);
 var name = bot.GetMeAsync().Result.FirstName;
 

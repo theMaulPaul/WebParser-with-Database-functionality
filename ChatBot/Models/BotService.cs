@@ -9,7 +9,10 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot;
 using WebParser.Models;
 using WebParser.Service;
+using EMailSender.Models;
 using Telegram.Bot.Types;
+using System.Text.RegularExpressions;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace ChatBot.Models
 {
@@ -17,6 +20,14 @@ namespace ChatBot.Models
     {
         private ProductsContext _productsContext;
         private WriteToFile _fileWriter;
+
+        private string server = "smtp.gmail.com";
+        private int port = 587;
+        private string username = "strangemanwithwhisky@gmail.com";
+        private string pass = "nbauxhvoshykygrh";
+        private string from = "strangemanwithwhisky@gmail.com";
+        private string subject = "Test letter";
+        private string body = "This email was sent to you as test";
 
         public BotService(ProductsContext productsContext, WriteToFile toFile)
         {
@@ -52,8 +63,7 @@ namespace ChatBot.Models
                     $"<b>{product.Description}</b>\n" +
                     $"${product.Price}\n",
                     parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
-                    replyMarkup: new InlineKeyboardMarkup(
-                        InlineKeyboardButton.WithUrl(text: "Open website", url: product.ProductUrl)));
+                    replyMarkup: new InlineKeyboardMarkup(InlineKeyboardButton.WithUrl(text: "Open website", url: product.ProductUrl)));
             }
             else
             {
@@ -64,7 +74,7 @@ namespace ChatBot.Models
 
         public async Task Start(ITelegramBotClient bot, Update up, CancellationToken token)
         {
-            ReplyKeyboardMarkup reply = new(new[] { new KeyboardButton[] { "Download file" } }) { ResizeKeyboard = true };
+            ReplyKeyboardMarkup reply = new(new[] { new KeyboardButton[] { "Download file", "Send to e-mail" } }) { ResizeKeyboard = true };
             await bot.SendTextMessageAsync(chatId: up.Message.Chat.Id, text: "Welcome to this chat!", replyMarkup: reply);
         }
         public async Task HandleUpdate(ITelegramBotClient bot, Update up, CancellationToken token)
@@ -77,9 +87,32 @@ namespace ChatBot.Models
                 var text = up.Message.Text;
                 if (text == "Download file") { await SendFile(bot, up, token); }
                 else if (text == "/start") { await Start(bot, up, token); }
+                else if(CheckForPattern(text)) { await SendEMail(bot, up, token); }
                 else { await FindProduct(bot, up, token); }
                 return;
             }
+        }
+
+        private async Task SendEMail(ITelegramBotClient bot, Update up, CancellationToken token)
+        {
+            ReplyKeyboardMarkup reply = new(new[] { new KeyboardButton[] { "Send e-mail" } }) { ResizeKeyboard = true };
+            var eMail = new MailSender(server, port, username, pass);
+            var text = up.Message.Text;
+            
+            if (text != null && CheckForPattern(text))
+                eMail.Send(from, text, subject, body);
+            else
+                await bot.SendTextMessageAsync(chatId: up.Message.Chat.Id, text: "E-Mail was not entered", replyMarkup: reply);
+        }
+
+        private bool CheckForPattern(string text)
+        {
+            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+            Regex expression = new Regex(pattern);
+            Match match = expression.Match(text);
+            if(match.Success)
+                return true; 
+            else return false;
         }
     }
 }
